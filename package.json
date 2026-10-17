@@ -1,0 +1,15 @@
+{
+  "name": "first-expressjs-app",
+  "version": "1.0.0",
+  "description": "This is my First ExpressJS App build with lots of excitement and love ",
+  "license": "ISC",
+  "author": "Dr-Prof-Abdullah",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.3.0"
+  }
+}
