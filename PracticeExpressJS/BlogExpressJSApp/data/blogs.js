@@ -2,20 +2,24 @@
 const blogs = [
     {
         title: "How to get started with Python",
-        content: "This is Python content"
+        content: "This is Python content",
+        slug: "python-learning", // unique identifier for the blog post, often used in URLs
         // author,date ,credit,comment kie FK
     },
     {
         title: "How to get started with JS",
-        content: "This is JS content"
+        content: "This is JS content",
+        slug: "js-learning"
     },
     {
         title: "How to get started with Django",
-        content: "This is Django content"
+        content: "This is Django content",
+        slug: "django-learning"
     },
     {
         title: "How to get started with CSS",
-        content: "This is CSS content"
+        content: "This is CSS content",
+        slug: "css-learning"
     }
 ]
 

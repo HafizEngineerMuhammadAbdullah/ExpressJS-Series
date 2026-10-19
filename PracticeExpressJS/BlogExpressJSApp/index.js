@@ -1,7 +1,13 @@
 const express = require('express');
+import { engine } from 'express-handlebars';
 const path = require('path');
 const app = express()
 const port = 3000
+
+
+app.engine('handlebars', engine());
+app.set('view engine', 'handlebars');
+app.set('views', './views');
 
 // MiddleWare(Request + Response)
 app.use(express.static(path.join(__dirname, "static")));
