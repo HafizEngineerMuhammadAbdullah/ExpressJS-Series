@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#14251f">
+    <meta name="description" content="This page couldn't be found. Head back to Stillwater and find your next quiet escape.">
+    <title>Page not found — Stillwater</title>
+    <link rel="preconnect" href="https://images.unsplash.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            color-scheme: dark;
+            --ink: #f5f4ec;
+            --muted: #c3cec4;
+            --green: #b6d59a;
+            --deep: #14251f;
+            font-family: "DM Sans", sans-serif;
+        }
+        * { box-sizing: border-box; }
+        body {
+            position: relative;
+            display: grid;
+            min-width: 320px;
+            min-height: 100vh;
+            margin: 0;
+            place-items: center;
+            overflow-x: hidden;
+            background-color: var(--deep);
+            background-image:
+                linear-gradient(115deg, rgba(13, 30, 24, .93) 0%, rgba(15, 33, 26, .76) 48%, rgba(16, 36, 28, .63) 100%),
+                url("/file.jpe"),
+                url("https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=2400&q=85");
+            background-position: center;
+            background-size: cover;
+            background-attachment: fixed;
+            color: var(--ink);
+        }
+        body::before, body::after {
+            position: fixed;
+            z-index: -1;
+            width: 30rem;
+            height: 30rem;
+            border: 1px solid rgba(220, 239, 218, .12);
+            border-radius: 50%;
+            content: "";
+            pointer-events: none;
+        }
+        body::before { top: -17rem; right: -9rem; }
+        body::after { bottom: -21rem; left: -12rem; width: 38rem; height: 38rem; }
+        a { color: inherit; text-decoration: none; }
+        .layout { width: min(1120px, calc(100% - 48px)); padding: 26px 0; }
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+        .brand { display: inline-flex; align-items: center; gap: 11px; font-size: 15px; font-weight: 700; letter-spacing: .03em; }
+        .brand-mark {
+            display: grid;
+            width: 38px;
+            height: 38px;
+            place-items: center;
+            border: 1px solid rgba(213, 231, 197, .45);
+            border-radius: 50%;
+            color: var(--green);
+        }
+        .brand-mark svg { width: 19px; height: 19px; }
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            padding: 9px 13px;
+            border: 1px solid rgba(255,255,255,.2);
+            border-radius: 999px;
+            background: rgba(232, 241, 228, .08);
+            color: #e2e8dd;
+            font-size: 10px;
+            letter-spacing: .11em;
+            text-transform: uppercase;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+        .status-pill::before {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--green);
+            box-shadow: 0 0 12px rgba(182, 213, 154, .8);
+            content: "";
+        }
+        .error-card {
+            display: grid;
+            min-height: 510px;
+            grid-template-columns: 1.08fr .92fr;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,.2);
+            border-radius: 26px;
+            background: rgba(231, 240, 227, .09);
+            box-shadow: 0 30px 100px rgba(0,0,0,.3);
+            backdrop-filter: blur(22px);
+            -webkit-backdrop-filter: blur(22px);
+        }
+        .message {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            padding: clamp(32px, 6vw, 76px);
+        }
+        .eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0 0 20px;
+            color: var(--green);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+        }
+        .eyebrow::before { width: 24px; height: 1px; background: var(--green); content: ""; }
+        h1 {
+            margin: 0 0 16px;
+            font-family: "Playfair Display", Georgia, serif;
+            font-size: clamp(41px, 5vw, 62px);
+            font-weight: 500;
+            letter-spacing: -.04em;
+            line-height: 1.08;
+        }
+        h1 em { color: var(--green); font-weight: 500; }
+        .description {
+            max-width: 390px;
+            margin: 0;
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.85;
+        }
+        .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 29px; }
+        .button {
+            display: inline-flex;
+            min-height: 48px;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 0 18px;
+            border: 1px solid rgba(218,234,205,.36);
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+            transition: transform .2s ease, background .2s ease, border-color .2s ease;
+        }
+        .button:hover { transform: translateY(-2px); }
+        .button:focus-visible, .brand:focus-visible { outline: 2px solid var(--green); outline-offset: 4px; }
+        .button-primary { border-color: var(--green); background: var(--green); color: #1d3024; }
+        .button-primary:hover { background: #c9e6ae; }
+        .button-secondary { background: rgba(232,241,228,.06); }
+        .button-secondary:hover { border-color: rgba(218,234,205,.68); background: rgba(232,241,228,.13); }
+        .button svg { width: 15px; height: 15px; }
+        .error-visual {
+            position: relative;
+            display: grid;
+            min-height: 510px;
+            overflow: hidden;
+            place-items: center;
+            border-left: 1px solid rgba(255,255,255,.14);
+            background: rgba(12, 27, 21, .22);
+        }
+        .visual-photo { position: absolute; inset: 14px; overflow: hidden; border-radius: 18px; }
+        .visual-photo img { width: 100%; height: 100%; object-fit: cover; }
+        .visual-photo::after {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(13,30,24,.04), rgba(11,26,20,.62));
+            content: "";
+        }
+        .orbit {
+            position: absolute;
+            width: min(75%, 340px);
+            aspect-ratio: 1;
+            border: 1px solid rgba(232,241,228,.35);
+            border-radius: 50%;
+            box-shadow: 0 0 0 25px rgba(232,241,228,.04), 0 0 0 58px rgba(232,241,228,.035);
+        }
+        .orbit::before, .orbit::after {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 9px;
+            height: 9px;
+            border: 2px solid #d5e7c5;
+            border-radius: 50%;
+            background: #315440;
+            box-shadow: 0 0 16px rgba(182,213,154,.8);
+            content: "";
+        }
+        .orbit::before { transform: translate(-50%, calc(-1 * min(37.5vw, 170px))); }
+        .orbit::after { transform: translate(calc(-1 * min(37.5vw, 170px)), -50%); }
+        .number {
+            position: relative;
+            z-index: 1;
+            color: rgba(250, 250, 239, .95);
+            font-family: "Playfair Display", Georgia, serif;
+            font-size: clamp(110px, 19vw, 230px);
+            font-weight: 500;
+            letter-spacing: -.1em;
+            line-height: .9;
+            text-shadow: 0 15px 48px rgba(0,0,0,.3);
+        }
+        .number span { color: var(--green); }
+        .visual-caption {
+            position: absolute;
+            right: 28px;
+            bottom: 28px;
+            left: 28px;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            padding: 15px 17px;
+            border: 1px solid rgba(255,255,255,.2);
+            border-radius: 14px;
+            background: rgba(21, 40, 31, .62);
+            font-size: 11px;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+        .visual-caption strong { display: block; margin-bottom: 4px; font-family: "Playfair Display", Georgia, serif; font-size: 15px; font-weight: 500; }
+        .visual-caption small { color: #d0dbcf; font-size: 10px; }
+        .caption-icon {
+            display: grid;
+            width: 34px;
+            height: 34px;
+            flex: 0 0 auto;
+            place-items: center;
+            border: 1px solid rgba(213,231,197,.34);
+            border-radius: 50%;
+            color: var(--green);
+        }
+        .caption-icon svg { width: 17px; height: 17px; }
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 18px 4px 0;
+            color: rgba(235, 241, 231, .7);
+            font-size: 10px;
+        }
+        .footer span:last-child { color: #d6e0d2; }
+        @media (max-width: 760px) {
+            body { background-attachment: scroll; }
+            .layout { width: min(600px, calc(100% - 34px)); }
+            .error-card { grid-template-columns: 1fr; }
+            .message { padding: 42px clamp(24px, 8vw, 58px); }
+            h1 { font-size: clamp(44px, 9vw, 59px); }
+            .error-visual { min-height: 340px; border-top: 1px solid rgba(255,255,255,.14); border-left: 0; }
+            .number { font-size: clamp(135px, 30vw, 200px); }
+            .orbit { width: min(60%, 270px); }
+            .orbit::before { transform: translate(-50%, -30vw); }
+            .orbit::after { transform: translate(-30vw, -50%); }
+        }
+        @media (max-width: 420px) {
+            .layout { padding: 17px 0; }
+            .topbar { margin-bottom: 17px; }
+            .status-pill { padding: 8px 10px; font-size: 9px; }
+            .message { padding: 35px 24px; }
+            .actions { align-items: stretch; flex-direction: column; width: 100%; }
+            .button { width: 100%; }
+            .error-visual { min-height: 290px; }
+            .visual-photo { inset: 9px; }
+            .visual-caption { right: 18px; bottom: 18px; left: 18px; }
+            .footer { flex-direction: column; gap: 7px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+        }
+    </style>
+</head>
+<body>
+    <main class="layout">
+        <header class="topbar">
+            <a class="brand" href="/" aria-label="Stillwater home">
+                <span class="brand-mark" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                        <path d="M3 9c3-3 6 3 9 0s6 3 9 0M3 14c3-3 6 3 9 0s6 3 9 0M3 19c3-3 6 3 9 0s6 3 9 0"/>
+                    </svg>
+                </span>
+                Stillwater
+            </a>
+            <span class="status-pill">Lost, not gone</span>
+        </header>
+        <section class="error-card" aria-labelledby="page-title">
+            <div class="message">
+                <p class="eyebrow">A wrong turn in the wilderness</p>
+                <h1 id="page-title">This trail ends <em>here.</em></h1>
+                <p class="description">Looks like this page wandered off the map. The good news? There are plenty of beautiful places still waiting to be found.</p>
+                <nav class="actions" aria-label="404 page navigation">
+                    <a class="button button-primary" href="/">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-6v-7h-4v7H4a1 1 0 0 1-1-1z"/></svg>
+                        Back to Stillwater
+                    </a>
+                    <a class="button button-secondary" href="/#places">
+                        Explore destinations
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                    </a>
+                </nav>
+            </div>
+            <div class="error-visual" aria-label="404 page not found">
+                <div class="visual-photo">
+                    <img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&amp;fit=crop&amp;w=1100&amp;q=85" alt="A quiet mountain lake beneath a wide, open sky">
+                </div>
+                <div class="orbit" aria-hidden="true"></div>
+                <div class="number" aria-hidden="true">4<span>0</span>4</div>
+                <div class="visual-caption">
+                    <span><strong>Even detours have a view.</strong><small>Take a breath. Find your way back.</small></span>
+                    <span class="caption-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2.2 4.8-4.8 2.2 2.2-4.8z"/></svg>
+                    </span>
+                </div>
+            </div>
+        </section>
+        <footer class="footer">
+            <span>Stillwater · Find your quiet.</span>
+            <span>Leave only footprints, take the long way home.</span>
+        </footer>
+    </main>
+</body>
+</html>
