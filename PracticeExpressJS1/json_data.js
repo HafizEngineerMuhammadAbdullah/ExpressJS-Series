@@ -114,4 +114,74 @@ const projectData = {
   ]
 };
 
-module.exports = projectData;
+
+
+
+const shoppingOrder = {
+  orderId: "ORD-20261118-8492",
+  status: "shipped", // e.g., "pending", "processing", "shipped", "delivered", "cancelled"
+  createdAt: "2026-11-18T09:15:00Z",
+  currency: "USD",
+
+  customer: {
+    customerId: "CUST-1042",
+    firstName: "Ayesha",
+    lastName: "Khan",
+    email: "ayesha.khan@example.com",
+    phone: "+92-300-1234567"
+  },
+
+  items: [
+    {
+      productId: "PROD-501",
+      sku: "WH-1000XM5-BLK",
+      name: "Wireless Noise-Cancelling Headphones",
+      quantity: 1,
+      unitPrice: 349.99,
+      subtotal: 349.99
+    },
+    {
+      productId: "PROD-812",
+      sku: "USBC-CBL-2M",
+      name: "Braided USB-C Charging Cable (2m)",
+      quantity: 2,
+      unitPrice: 15.00,
+      subtotal: 30.00
+    }
+  ],
+
+  pricing: {
+    itemsSubtotal: 379.99,
+    shippingCost: 10.00,
+    taxAmount: 19.00,
+    discountAmount: 20.00,
+    promoCode: "WELCOME20",
+    grandTotal: 388.99
+  },
+
+  shipping: {
+    method: "Express Courier",
+    carrier: "TCS Express",
+    trackingNumber: "TRK992837465",
+    estimatedDelivery: "2026-11-21",
+    address: {
+      street: "Block 7, Gulshan-e-Iqbal",
+      city: "Karachi",
+      state: "Sindh",
+      postalCode: "75300",
+      country: "Pakistan"
+    }
+  },
+
+  payment: {
+    method: "credit_card", // e.g., "credit_card", "cod", "wallet"
+    status: "paid",
+    transactionId: "TXN-774839201",
+    cardBrand: "Visa",
+    last4Digits: "4242"
+  }
+};
+
+module.exports = { projectData, shoppingOrder };
+
+// module.exports = projectData;
