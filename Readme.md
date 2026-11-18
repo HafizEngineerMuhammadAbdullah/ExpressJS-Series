@@ -509,3 +509,83 @@ Created a polished, responsive 404 page that matches Stillwater’s nature theme
 I also fixed the Express 5 catch-all route so unknown URLs display the page with a real **404** status, and added a route for the local background image. Verified both responses and the page in the browser.
 
 Files: `404.html` · `pagenotfound.js`
+
+
+Here is a standard JavaScript shopping order object structured like a typical e-commerce API response. [1] (https://dev.wix.com/docs/api-reference/business-solutions/e-commerce/orders/orders/order-object)
+javascript
+const shoppingOrder = {
+  orderId: "ORD-20261118-8492",
+  status: "shipped", // e.g., "pending", "processing", "shipped", "delivered", "cancelled"
+  createdAt: "2026-11-18T09:15:00Z",
+  currency: "USD",
+
+  customer: {
+    customerId: "CUST-1042",
+    firstName: "Ayesha",
+    lastName: "Khan",
+    email: "ayesha.khan@example.com",
+    phone: "+92-300-1234567"
+  },
+
+  items: [
+    {
+      productId: "PROD-501",
+      sku: "WH-1000XM5-BLK",
+      name: "Wireless Noise-Cancelling Headphones",
+      quantity: 1,
+      unitPrice: 349.99,
+      subtotal: 349.99
+    },
+    {
+      productId: "PROD-812",
+      sku: "USBC-CBL-2M",
+      name: "Braided USB-C Charging Cable (2m)",
+      quantity: 2,
+      unitPrice: 15.00,
+      subtotal: 30.00
+    }
+  ],
+
+  pricing: {
+    itemsSubtotal: 379.99,
+    shippingCost: 10.00,
+    taxAmount: 19.00,
+    discountAmount: 20.00,
+    promoCode: "WELCOME20",
+    grandTotal: 388.99
+  },
+
+  shipping: {
+    method: "Express Courier",
+    carrier: "TCS Express",
+    trackingNumber: "TRK992837465",
+    estimatedDelivery: "2026-11-21",
+    address: {
+      street: "Block 7, Gulshan-e-Iqbal",
+      city: "Karachi",
+      state: "Sindh",
+      postalCode: "75300",
+      country: "Pakistan"
+    }
+  },
+
+  payment: {
+    method: "credit_card", // e.g., "credit_card", "cod", "wallet"
+    status: "paid",
+    transactionId: "TXN-774839201",
+    cardBrand: "Visa",
+    last4Digits: "4242"
+  }
+};
+Use code with caution.
+
+Key Sections Explained
+
+• Order Metadata. orderId, status, and createdAt track the order's lifecycle and timeline.
+• Customer & Shipping. Separates buyer contact info from the delivery destination and tracking details. [1] (https://dev.wix.com/docs/api-reference/business-solutions/e-commerce/orders/orders/order-object)
+• Line Items (items). An array of objects so an order can hold one or multiple products with individual quantities and subtotals.
+• Pricing Breakdown. Keeps item totals, taxes, discounts, and the final grandTotal explicit to prevent calculation mismatches on the frontend.
+If you're building a specific feature, let me know:
+• Platform or API (e.g., Shopify, Stripe, WooCommerce, or a custom REST/GraphQL backend)
+• Use case (e.g., mock data for frontend UI, TypeScript interface, or database schema)
+I can tailor the exact property names and data types to match.
