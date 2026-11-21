@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+</head>
+
+<body>
+    <h1>Profile</h1>
+    <%- include('common/Navbar') %> 
+    <h2>Welcome to <%= userInfo.name %></h2>
+    <p>Your user id <%= userInfo.id %></p>
+    <ul>
+        <%# < %= ... % > is used when rendering dynamic content or generating an HTML output %> 
+        <%# Each JS expression should be wrapped in a < % ... % > tag %>
+
+        <% userInfo.fav.forEach((item) => { %>
+            <li><%= item %></li>
+            <% }) %>
+
+    </ul>
+</body>
+</html>

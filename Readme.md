@@ -589,3 +589,69 @@ If you're building a specific feature, let me know:
 • Platform or API (e.g., Shopify, Stripe, WooCommerce, or a custom REST/GraphQL backend)
 • Use case (e.g., mock data for frontend UI, TypeScript interface, or database schema)
 I can tailor the exact property names and data types to match.
+
+
+
+The error is caused by this HTML comment line containing an invalid EJS output tag:
+<!-- <%= is used when rendering dynamic content or generating an HTML output %> -->
+
+Why That Line Breaks EJS Compilation
+
+• EJS ignores HTML comments: Wrapping <%= ... %> inside <!-- ... --> does not stop EJS from executing it. EJS parses every <% ... %> tag in the file first, before the browser ever sees HTML comments.
+• Invalid JavaScript inside <%= ... %>: EJS takes everything between <%= and %> and drops it straight into an internal JavaScript function call (__append( ... )).
+• Because the plain English sentence is used when rendering dynamic content or generating an HTML output is not valid JavaScript syntax, it breaks __append(...) and causes Node.js to throw SyntaxError: missing ) after argument list.
+(Note: Your other commented line <!-- <% include('common/Navbar') %> --> also still executes on the server even though its output is hidden inside HTML comments in the browser.)
+
+How to Fix It
+
+Use EJS's own comment tag <%# ... %> instead of HTML comments whenever you write notes containing EJS syntax:
+ejs
+<%# include('common/Navbar') %>
+<%# <%= is used when rendering dynamic content or generating an HTML output %>
+Use code with caution.
+Everything inside <%# ... %> is completely ignored by the EJS compiler and will not appear in the final HTML output either.
+Would you like to check the Express route passing title and userInfo into profile.ejs, or learn how to properly include common/Navbar using <%- include(...) %>?
+The error is caused by this HTML comment line containing an invalid EJS output tag:
+<!-- <%= is used when rendering dynamic content or generating an HTML output %> -->
+
+Why That Line Breaks EJS Compilation
+
+• EJS ignores HTML comments: Wrapping <%= ... %> inside <!-- ... --> does not stop EJS from executing it. EJS parses every <% ... %> tag in the file first, before the browser ever sees HTML comments.
+• Invalid JavaScript inside <%= ... %>: EJS takes everything between <%= and %> and drops it straight into an internal JavaScript function call (__append( ... )).
+• Because the plain English sentence is used when rendering dynamic content or generating an HTML output is not valid JavaScript syntax, it breaks __append(...) and causes Node.js to throw SyntaxError: missing ) after argument list.
+(Note: Your other commented line <!-- <% include('common/Navbar') %> --> also still executes on the server even though its output is hidden inside HTML comments in the browser.)
+
+How to Fix It
+
+Use EJS's own comment tag <%# ... %> instead of HTML comments whenever you write notes containing EJS syntax:
+ejs
+<%# include('common/Navbar') %>
+<%# <%= is used when rendering dynamic content or generating an HTML output %>
+Use code with caution.
+Everything inside <%# ... %> is completely ignored by the EJS compiler and will not appear in the final HTML output either.
+Would you like to check the Express route passing title and userInfo into profile.ejs, or learn how to properly include common/Navbar using <%- include(...) %>?
+EJS tags cannot be nested, so the inner %> closes your <%# comment tag early instead of letting it wrap the outer %>.
+
+What Happens in Each Line
+
+1. Line 1 has an early closing tag and a leftover %>:ejs
+<%# <%= is used when rendering dynamic content or generating an HTML output %>  %>
+Use code with caution.
+
+	• EJS does not count matching pairs of <% and %>. As soon as it sees <%#, it treats the very first %> it finds (right after HTML output) as the end of the comment.
+	• That leaves the second %> hanging outside the comment as stray text in your HTML output.
+2. Line 2 works, though the inner <% is unnecessary:ejs
+<%# <% Each Express of JS should be wrap in a single line %>
+Use code with caution.
+
+	• Because there is only one closing %> at the end, EJS comments out the entire line properly.
+
+How to Write It Cleanly
+
+Avoid writing literal %> inside an EJS comment—describe the tag names or escape them instead:
+ejs
+<%# < %= ... % > is used when rendering dynamic content or generating an HTML output %>
+<%# Each JS expression should be wrapped in a < % ... % > tag %>
+Use code with caution.
+(Putting a space between % and > inside your notes prevents EJS from ending the comment early.)
+Did your page render properly after updating those comments, or are you seeing another error in the browser or terminal?
