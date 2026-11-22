@@ -26,7 +26,6 @@ const getTeachers = async () => {
     console.log(teachers);
 }
 
-// addTeacher();
 
 // Start the server
 // app.listen(PORT, () => {
