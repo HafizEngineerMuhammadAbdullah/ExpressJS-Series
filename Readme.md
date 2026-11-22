@@ -655,3 +655,180 @@ ejs
 Use code with caution.
 (Putting a space between % and > inside your notes prevents EJS from ending the comment early.)
 Did your page render properly after updating those comments, or are you seeing another error in the browser or terminal?
+
+
+In MongoDB, __v is the default version key automatically added by Mongoose (a popular Node.js ODM) to track a document's internal revision count and prevent conflicting concurrent updates. [1] (https://stackoverflow.com/questions/12495891/what-is-the-v-field-in-mongoose), [2] (https://intellipaat.com/blog/what-is-the-v-field-in-mongoose/)
+MongoDB itself does not generate __v—when you insert a document directly via the MongoDB shell or native drivers, only _id is created. The __v field comes specifically from Mongoose. [1] (https://kb.objectrocket.com/mongo-db/understanding-the-mongoose-__v-field-1011), [2] (https://mongoosejs.com/docs/guide.html)
+
+How __v Works
+
+• Initial value. When Mongoose creates and saves a new document, it sets __v to 0 by default. [1] (https://www.freecodecamp.org/news/introduction-to-mongoose-for-mongodb-d2a7aa593c57/), [2] (https://kb.objectrocket.com/mongo-db/understanding-the-mongoose-__v-field-1011)
+• Optimistic concurrency control. One point of agreement among developers on Stack Overflow is that Mongoose uses __v to track internal revisions and manage concurrent updates, especially when modifying arrays. [1] (https://stackoverflow.com/questions/12495891/what-is-the-v-field-in-mongoose)
+• Conflict detection. If two processes load the same document at __v: 0 and one saves an array mutation that increments __v to 1, the second process's save() call fails with a VersionError because its version number no longer matches the database. [1] (https://intellipaat.com/blog/what-is-the-v-field-in-mongoose/), [2] (https://kb.objectrocket.com/mongo-db/understanding-the-mongoose-__v-field-1011)
+• Standard field updates. Modifying top-level scalar fields (like strings or numbers) via save() or using atomic update methods like updateOne() and findByIdAndUpdate() generally leaves __v unchanged unless you explicitly increment it. [1] (https://kb.objectrocket.com/mongo-db/understanding-the-mongoose-__v-field-1011)
+
+Managing or Disabling __v
+
+According to the Mongoose Schema Guide, you can rename, hide, or disable the version key in your schema definition: [1] (https://mongoosejs.com/docs/guide.html), [2] (https://intellipaat.com/blog/what-is-the-v-field-in-mongoose/)
+javascript
+// 1. Disable __v completely
+const userSchema = new mongoose.Schema(
+  { name: String },
+  { versionKey: false }
+);
+
+// 2. Keep __v in the database, but omit it from JSON API responses
+userSchema.set('toJSON', {
+  transform: (doc, ret) => {
+    delete ret.__v;
+    return ret;
+  }
+});
+Use code with caution.
+If you're working with a specific setup, let me know:
+• Whether you want to hide __v from API responses or disable it completely
+• If you're troubleshooting a VersionError during concurrent saves
+I can share the exact schema configuration or update pattern for your use case.
+
+Here is a production-ready Mongoose User schema for a signup form with built-in field validation, unique email indexing, and timestamps.
+javascript
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+
+const userSchema = new mongoose.Schema(
+  {
+    fullName: {
+      type: String,
+      required: [true, 'Full name is required'],
+      trim: true,
+      minlength: [2, 'Name must be at least 2 characters'],
+      maxlength: [60, 'Name cannot exceed 60 characters'],
+    },
+    email: {
+      type: String,
+      required: [true, 'Email is required'],
+      unique: true,
+      lowercase: true,
+      trim: true,
+      match: [/^\S+@\S+\.\S+$/, 'Please enter a valid email address'],
+    },
+    password: {
+      type: String,
+      required: [true, 'Password is required'],
+      minlength: [8, 'Password must be at least 8 characters'],
+      select: false, // Excludes password from query results by default
+    },
+    role: {
+      type: String,
+      enum: ['user', 'admin'],
+      default: 'user',
+    },
+  },
+  {
+    timestamps: true, // Automatically adds createdAt and updatedAt fields
+    toJSON: {
+      transform: (doc, ret) => {
+        delete ret.password;
+        delete ret.__v;
+        return ret;
+      },
+    },
+  }
+);
+
+// Hash password automatically before saving
+userSchema.pre('save', async function () {
+  if (!this.isModified('password')) return;
+  const salt = await bcrypt.genSalt(12);
+  this.password = await bcrypt.hash(this.password, salt);
+});
+
+// Helper method to verify password during login
+userSchema.methods.comparePassword = async function (candidatePassword) {
+  return bcrypt.compare(candidatePassword, this.password);
+};
+
+module.exports = mongoose.model('User', userSchema);
+Use code with caution.
+
+Key Features Included
+
+• Input validation. Uses Mongoose Schema Validation to enforce required fields, minimum/maximum lengths, whitespace trimming, and email formatting before saving to the database.
+• Unique email enforcement. Sets unique: true and lowercase: true on email so duplicate accounts with different casing (e.g., User@mail.com vs. user@mail.com) are prevented.
+• Password security. Hashes passwords automatically with bcryptjs in a pre('save') hook and hides the password field from queries (select: false) and API responses (toJSON).
+• Automatic timestamps. Enables timestamps: true to manage createdAt and updatedAt dates without manual tracking.
+If you'd like to customize this model, let me know:
+• Extra signup fields (such as username, phone number, profile avatar, or email verification tokens)
+• Your stack (TypeScript interfaces, Express controller route, or Next.js/native MongoDB driver)
+I can update the schema and provide the matching signup endpoint code.
+Here is sample signup data and a Mongoose script using User.create() to insert new user records into your MongoDB database while automatically hashing passwords.
+
+1. Sample Signup Payload (JSON)
+
+If you are testing an API endpoint (such as in Postman or a frontend form), send a JSON body matching your schema fields:
+json
+{
+  "fullName": "Ayesha Khan",
+  "email": "ayesha.khan@example.com",
+  "password": "StrongPassword123!"
+}
+Use code with caution.
+
+2. Insert Sample Data with Mongoose
+
+Use Model.create() rather than insertMany() so that Mongoose triggers your pre('save') middleware to hash each password before saving:
+javascript
+const mongoose = require('mongoose');
+const User = require('./models/User'); // Path to your User model
+
+const sampleUsers = [
+  {
+    fullName: 'Ayesha Khan',
+    email: 'ayesha.khan@example.com',
+    password: 'StrongPassword123!',
+    role: 'user',
+  },
+  {
+    fullName: 'Bilal Ahmed',
+    email: 'bilal.admin@example.com',
+    password: 'AdminPassword456!',
+    role: 'admin',
+  },
+];
+
+async function seedUsers() {
+  try {
+    await mongoose.connect('mongodb://127.0.0.1:27017/myapp');
+
+    // User.create() runs validation and the pre('save') password-hashing hook
+    const createdUsers = await User.create(sampleUsers);
+    console.log('Users created:', createdUsers);
+  } catch (error) {
+    console.error('Error creating users:', error.message);
+  } finally {
+    await mongoose.disconnect();
+  }
+}
+
+seedUsers();
+Use code with caution.
+
+3. Resulting Document Stored in MongoDB
+
+Once inserted, MongoDB stores the document with an auto-generated _id, hashed password, timestamps, and __v: 0:
+json
+{
+  "_id": "673f8a12c9e77a001c4b9102",
+  "fullName": "Ayesha Khan",
+  "email": "ayesha.khan@example.com",
+  "password": "$2a$12$eImiTXuWVxfM37uY4JANjQ.O7/8e9J2K5G3H1L0P9Q8R7S6T5U4V2",
+  "role": "user",
+  "createdAt": "2026-11-22T05:53:00.000Z",
+  "updatedAt": "2026-11-22T05:53:00.000Z",
+  "__v": 0
+}
+Use code with caution.
+If you'd like to keep building out your authentication flow, let me know:
+• Whether you need an Express POST /signup route with error handling (like duplicate email 11000 errors)
+• If you want a MongoDB Compass / mongosh JSON seed file instead of a Node.js script
+I can generate the exact code for your setup.
