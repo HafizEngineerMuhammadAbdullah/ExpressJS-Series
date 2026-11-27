@@ -1,0 +1,35 @@
+const os = require('os');
+
+// Get the system's hostname
+const hostname = os.hostname();
+console.log(`Hostname: ${hostname}`);
+const platform = os.platform();
+console.log(`Platform: ${platform}`);
+const architecture = os.arch();
+console.log(`Architecture: ${architecture}`);
+const cpuInfo = os.cpus();
+console.log(`CPU Info: ${JSON.stringify(cpuInfo, null, 2)}`);
+const totalMemory = os.totalmem();
+console.log(`Total Memory: ${totalMemory} bytes`);
+console.log(`Total Memory: ${totalMemory / (1024 * 1024)} MB`);
+console.log(`Total Memory: ${totalMemory / (1024 * 1024 * 1024)} GB`);
+const freeMemory = os.freemem();
+console.log(`Free Memory: ${freeMemory} bytes`);
+console.log(`Free Memory: ${freeMemory / (1024 * 1024)} MB`);
+console.log(`Free Memory: ${freeMemory / (1024 * 1024 * 1024)} GB`);
+const uptime = os.uptime();
+console.log(`Uptime: ${uptime} seconds`);
+const networkInterfaces = os.networkInterfaces();
+console.log(`Network Interfaces: ${JSON.stringify(networkInterfaces, null, 2)}`);
+const userInfo = os.userInfo();
+console.log(`User Info: ${JSON.stringify(userInfo, null, 2)}`);
+const homeDir = os.homedir();
+console.log(`Home Directory: ${homeDir}`);
+const tempDir = os.tmpdir();
+console.log(`Temporary Directory: ${tempDir}`);
+const endianness = os.endianness();
+console.log(`Endianness: ${endianness}`);
+const version = os.version();
+console.log(`OS Version: ${version}`);
+const machine = os.machine();
+console.log(`Machine: ${machine}`);

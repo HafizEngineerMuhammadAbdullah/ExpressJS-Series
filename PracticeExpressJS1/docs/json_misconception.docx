@@ -73,3 +73,43 @@ If you're ready to put this into practice, let me know:
 • If you'd like to see how Axios handles parsing/stringifying automatically compared to fetch()
 I can share a clean code example for whichever you're using next.
 
+
+
+This is a JavaScript runtime error (specifically a TypeError) occurring on your Node.js/JavaScript backend during data serialization, which typically results in an HTTP 500 Internal Server Error being sent back to the client.
+It happens when your code tries to pass an object containing a circular reference (an object that references itself directly or indirectly) into JSON.stringify().
+
+Common Causes
+
+• Passing a raw request/response object: Accidentally trying to stringify or send the entire Express req or res object instead of just req.body or res.locals.
+• Unconverted database models: Returning a raw Mongoose document or Sequelize/Prisma instance directly in a JSON response without converting it to a plain JavaScript object first (e.g., forgetting .toObject() or .lean()).
+• Self-referencing data structures: Creating an object where a property points back to the parent object (e.g., user.profile = user).
+• External HTTP client responses: Trying to serialize a full Axios or Fetch response object (which contains internal socket/request references) instead of just response.data.
+
+How to Fix It
+
+1. Extract only the needed data:
+If you are logging or sending data from a network call or database query, isolate the specific properties you need:javascript
+// ❌ Bad: Axios response contains circular references
+res.json(axiosResponse);
+
+// ✅ Good: Send only the data payload
+res.json(axiosResponse.data);
+Use code with caution.
+2. Convert database documents to plain objects:
+If you are using an ORM/ODM like Mongoose, use .lean() on your query or .toObject() on the document:javascript
+const updatedUser = await User.findByIdAndUpdate(id, data, { new: true }).lean();
+res.json(updatedUser);
+Use code with caution.
+3. Create a clean DTO (Data Transfer Object):
+Manually construct a new object with only the fields required by the frontend:javascript
+res.json({
+  id: user.id,
+  name: user.name,
+  email: user.email
+});
+Use code with caution.
+If you'd like help pinpointing the exact line causing this, share:
+• Your backend framework and database library (e.g., Express + Mongoose, Next.js + Prisma)
+• The code snippet from the route or controller handling the user update
+
+
